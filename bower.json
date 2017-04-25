@@ -17,7 +17,8 @@
     "polymer": "Polymer/polymer#^1.6.0",
     "paper-card": "PolymerElements/paper-card#^1.1.6",
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.4",
-    "paper-elements": "PolymerElements/paper-elements#^1.0.7"
+    "paper-elements": "PolymerElements/paper-elements#^1.0.7",
+    "polymer-card-contact": "https://github.com/victoriadichiera/polymer-card-contact.git"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
