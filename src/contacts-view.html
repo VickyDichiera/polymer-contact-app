@@ -1,0 +1,69 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/polymer-card-contact/polymer-card-contact.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="contacts-view">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <div class="card">
+      <h1>My Contacts</h1>
+      <template is="dom-repeat" items="{{users}}" id="userCard">
+        <polymer-card-contact user="{{item}}"></polymer-card-contact>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'contacts-view',
+      properties: {
+        users: {
+          type: Array,
+          value: [
+            {id:1, phone: 11, name: 'Mr. Nice', last:"last", favorite:false, email: 'contact@mail.com'},
+            {id:2, phone: 12, name: 'Narco', last:"last", favorite:false, email: 'contact@mail.com'},
+            {id:3, phone: 13, name: 'Bombasto', last:"last", favorite:false, email: 'contact@mail.com'},
+            {id:4, phone: 14, name: 'Celeritas', last:"last", favorite:false, email: 'contact@mail.com'},
+            {id:5, phone: 15, name: 'Magneta', last:"last", favorite:false, email: 'contact@mail.com'},
+            {id:6, phone: 16, name: 'RubberMan', last:"last", favorite:false, email: 'contact@mail.com'},
+            {id:7, phone: 17, name: 'Dynama', last:"last", favorite:false, email: 'contact@mail.com'},
+            {id:8, phone: 18, name: 'Dr IQ', last:"last", favorite:false, email: 'contact@mail.com'},
+            {id:9, phone: 19, name: 'Magma', last:"last", favorite:false, email: 'contact@mail.com'},
+            {id:10, phone: 20, name: 'Tornado', last:"last", favorite:false, email: 'contact@mail.com'}
+          ],
+        },
+
+      },
+      listeners: {
+       'toggleFavorite': '_toggleFavorite',
+      },
+      selectArray: function(response){
+        return response.results;
+      },
+      _toggleFavorite: function(event, param) {
+        var index = this.users.findIndex(function(x){ return x.id === param.id })
+        this.users[index].favorite = !this.users[index].favorite;
+        debugger;
+      }
+    });
+  </script>
+</dom-module>
