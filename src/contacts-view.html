@@ -19,26 +19,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="shared-styles">
       :host {
         display: block;
-
         padding: 10px;
       }
+      .card{
+        display: inline-block;
+      }
     </style>
-
-    <div class="card">
-      <h1>My Contacts</h1>
-      <template is="dom-repeat" items="{{users}}" id="userCard">
-        <polymer-card-contact user="{{item}}"></polymer-card-contact>
-      </template>
-    </div>
+  
+     <h1>My Contacts</h1>
+     <div class="contacts">
+       <template is="dom-repeat" items="{{users.results}}" id="cardCollection">
+         <polymer-card-contact class="card" favorite="" name="{{item.name.firts}}" last="{{item.name.last}}" phone="{{item.phone}}" email="{{item.email}}"></polymer-card-contact>
+       </template>
+     </div>
   </template>
 
   <script>
     Polymer({
       is: 'contacts-view',
       properties: {
-        users: {
-          type: Array,
-          value: [
+        users:{
+          type:Array,
+          observer: '_changedUsers',
+          value: { results: [
             {id:1, phone: 11, name: 'Mr. Nice', last:"last", favorite:false, email: 'contact@mail.com'},
             {id:2, phone: 12, name: 'Narco', last:"last", favorite:false, email: 'contact@mail.com'},
             {id:3, phone: 13, name: 'Bombasto', last:"last", favorite:false, email: 'contact@mail.com'},
@@ -49,21 +52,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             {id:8, phone: 18, name: 'Dr IQ', last:"last", favorite:false, email: 'contact@mail.com'},
             {id:9, phone: 19, name: 'Magma', last:"last", favorite:false, email: 'contact@mail.com'},
             {id:10, phone: 20, name: 'Tornado', last:"last", favorite:false, email: 'contact@mail.com'}
-          ],
+          ]},
         },
+      },
+      _changedUsers: function(newValue, oldValue){
+        console.log(newValue);
+      },
 
-      },
-      listeners: {
-       'toggleFavorite': '_toggleFavorite',
-      },
-      selectArray: function(response){
-        return response.results;
-      },
-      _toggleFavorite: function(event, param) {
-        var index = this.users.findIndex(function(x){ return x.id === param.id })
-        this.users[index].favorite = !this.users[index].favorite;
-        debugger;
-      }
     });
   </script>
 </dom-module>
