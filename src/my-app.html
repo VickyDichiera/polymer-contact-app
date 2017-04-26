@@ -20,6 +20,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
@@ -57,7 +59,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: bold;
       }
     </style>
-
+    <iron-ajax
+    auto
+    url="https://randomuser.me/api/?results=5"
+    on-response="_processArray"
+    handle-as="json">
+    </iron-ajax>
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -90,11 +97,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
-          <my-view3 name="view3"></my-view3>
-          <contacts-view name="contacts"></contacts-view>
-          <favorites-view name="favorites"></favorites-view>
+          <contacts-view name="contacts" users={{users}}></contacts-view>
+          <contacts-view name="favorites" users={{favorites}} ></contacts-view>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
       </app-header-layout>
@@ -111,12 +115,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true,
           observer: '_pageChanged',
         },
+        favorites: {
+          type: Array,
+        },
+        users:{
+          type: Array,
+        },
+      },
+
+      _processArray: function(response){
+        var users = response.detail.response.results;
+        users.forEach(function(obj, i) {
+          if(!obj.favorite){
+            obj['favorite'] = false;
+          }
+          obj['id'] = i;
+        });
+        this.users = users;
+      },
+      listeners: {
+        'favorite-changed': '_updateUsers',
+      },
+      _updateUsers: function(event){
+        this.favorites = this.users.filter(function(x){ return x.favorite === true})
       },
 
       observers: [
         '_routePageChanged(routeData.page)',
       ],
-
       _routePageChanged: function(page) {
         this.page = page || 'contacts';
 
@@ -124,10 +150,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.$.drawer.close();
         }
       },
-
       _pageChanged: function(page) {
         // Load page import on demand. Show 404 page if fails
-        var resolvedPageUrl = this.resolveUrl(page+'-view' + '.html');
+        var resolvedPageUrl = this.resolveUrl('contacts'+'-view' + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
       },
 
