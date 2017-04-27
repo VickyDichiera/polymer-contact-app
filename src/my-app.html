@@ -118,9 +118,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         favorites: {
           type: Array,
           notify: true,
+          value: []
         },
         users:{
           type: Array,
+          notify: true,
+          value: []
         },
       },
       _processArray: function(response){

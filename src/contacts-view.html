@@ -49,6 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       listeners: {
         'favorites-changed': '_updateUsers',
+        'users-changed': '_updateUsers',
       },
       _updateUsers: function(event){
         console.log(this.name);
