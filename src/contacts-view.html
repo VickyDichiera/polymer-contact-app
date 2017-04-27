@@ -30,7 +30,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="card">
       <h1>My Contacts</h1>
-      <template id="contactsView" is="dom-repeat" items="{{users}}" filter="_isFavorite">
+      <template id="contactsView" is="dom-repeat" items="{{users}}" >
         <polymer-card-contact class="card" id="{{item.id}}" favorite="{{item.favorite}}" picture={{item.picture.large}}  name="{{item.name.first}}" last="{{item.name.last}}" phone="{{item.phone}}" email="{{item.email}}"></polymer-card-contact>
       </template>
     </div>
@@ -42,14 +42,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         users:{
           type:Array,
-          observer:"_isFavorite"
         },
         name:{
           type:String,
         }
       },
       listeners: {
-        'favorite-changed': '_updateUsers',
+        'favorites-changed': '_updateUsers',
       },
       _updateUsers: function(event){
         console.log(this.name);
@@ -57,7 +56,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         this.$.contactsView.render();
       },
-      _isFavorite: function(user) {
+      /*_isFavorite: function(user) {
         console.log("check if is favorite");
         if(this.name === "favorites"){
           if (!user.favorite){
@@ -68,7 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }else{
           return user;
         }
-      },
+      },*/
     });
   </script>
 </dom-module>
